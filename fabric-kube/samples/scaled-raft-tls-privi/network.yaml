@@ -15,20 +15,6 @@ network:
 
   # defines which chaincodes will be installed to which organizations
   chaincodes:
-    - name: CoinBalance
-      language: golang
-      # if defined, this will override the global chaincode.version value
-      version: # "2.0" 
-      # chaincode will be installed to all peers in these organizations
-      orgs: [privi]
-      # at which channels are we instantiating/upgrading chaincode?
-      channels:
-      - name: broadcast
-        # chaincode will be instantiated/upgraded using the first peer in the first organization
-        # chaincode will be invoked on all peers in these organizations
-        orgs: [privi]
-        policy: OR('priviMSP.member')
-        
     - name: DataProtocol
       # if defined, this will override the global chaincode.language value
       language: golang
