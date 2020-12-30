@@ -10,6 +10,21 @@
 ################################################################################
 Organizations:
 
+    - &cache
+        Name: cacheMSP
+        ID: cacheMSP
+        MSPDir: crypto-config/ordererOrganizations/cache.com/msp
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('cacheMSP.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('cacheMSP.member')"
+            Admins:
+                Type: Signature
+                Rule: "OR('cacheMSP.admin')"
+
     - &privi
         Name: priviMSP
 
@@ -17,7 +32,7 @@ Organizations:
         ID: priviMSP
 
         # MSPDir is the filesystem path which contains the MSP configuration
-        MSPDir: crypto-config/ordererOrganizations/privi.com/msp
+        MSPDir: crypto-config/peerOrganizations/privi.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -137,9 +152,9 @@ Orderer: &OrdererDefaults
     OrdererType: etcdraft
 
     Addresses:
-        - orderer0.privi.com:7050
-        - orderer1.privi.com:7050
-        - orderer2.privi.com:7050
+        - orderer0.cache.com:7050
+        - orderer1.cache.com:7050
+        - orderer2.cache.com:7050
 
     # Batch Timeout: The amount of time to wait before creating a batch
     BatchTimeout: 1s
@@ -161,18 +176,18 @@ Orderer: &OrdererDefaults
 
     EtcdRaft:
         Consenters:
-            - Host: orderer0.privi.com
+            - Host: orderer0.cache.com
               Port: 7050
-              ClientTLSCert: crypto-config/ordererOrganizations/privi.com/orderers/orderer0.privi.com/tls/server.crt
-              ServerTLSCert: crypto-config/ordererOrganizations/privi.com/orderers/orderer0.privi.com/tls/server.crt
-            - Host: orderer1.privi.com
+              ClientTLSCert: crypto-config/ordererOrganizations/cache.com/orderers/orderer0.cache.com/tls/server.crt
+              ServerTLSCert: crypto-config/ordererOrganizations/cache.com/orderers/orderer0.cache.com/tls/server.crt
+            - Host: orderer1.cache.com
               Port: 7050
-              ClientTLSCert: crypto-config/ordererOrganizations/privi.com/orderers/orderer1.privi.com/tls/server.crt
-              ServerTLSCert: crypto-config/ordererOrganizations/privi.com/orderers/orderer1.privi.com/tls/server.crt
-            - Host: orderer2.privi.com
+              ClientTLSCert: crypto-config/ordererOrganizations/cache.com/orderers/orderer1.cache.com/tls/server.crt
+              ServerTLSCert: crypto-config/ordererOrganizations/cache.com/orderers/orderer1.cache.com/tls/server.crt
+            - Host: orderer2.cache.com
               Port: 7050
-              ClientTLSCert: crypto-config/ordererOrganizations/privi.com/orderers/orderer2.privi.com/tls/server.crt
-              ServerTLSCert: crypto-config/ordererOrganizations/privi.com/orderers/orderer2.privi.com/tls/server.crt
+              ClientTLSCert: crypto-config/ordererOrganizations/cache.com/orderers/orderer2.cache.com/tls/server.crt
+              ServerTLSCert: crypto-config/ordererOrganizations/cache.com/orderers/orderer2.cache.com/tls/server.crt
 
         # Options to be specified for all the etcd/raft nodes. The values here
         # are the defaults for all new channels and can be modified on a
@@ -276,7 +291,7 @@ Profiles:
         Orderer:
             <<: *OrdererDefaults
             Organizations:
-                - *privi
+                - *cache
 
         Consortiums:
             TheConsortium:
