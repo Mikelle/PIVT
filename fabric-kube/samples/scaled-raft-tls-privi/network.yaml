@@ -23,5 +23,3 @@ network:
       - name: broadcast
         orgs: [privi]
         policy: OR('priviMSP.member')
-
-
