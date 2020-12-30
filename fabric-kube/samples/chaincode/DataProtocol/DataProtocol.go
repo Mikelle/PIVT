@@ -6,8 +6,6 @@ import (
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 
-	//"github.com/rs/xid"
-	"github.com/hyperledger/fabric/core/chaincode/shim/ext/cid"
 	//"github.com/hyperledger/fabric/common/util"
 	pb "github.com/hyperledger/fabric/protos/peer"
 )
@@ -38,10 +36,10 @@ func (t *DataProtocolSmartContract) Invoke(stub shim.ChaincodeStubInterface) pb.
 	// Retrieve function and arguments //
 	function, args := stub.GetFunctionAndParameters()
 
-	if err := cid.AssertAttributeValue(stub, "userRole", ADMIN_ROLE); err != nil {
-		message := "PERMISSION DENIED TO CALL DATA PROTOCOL"
-		return pb.Response{Status: 403, Message: message}
-	}
+	//if err := cid.AssertAttributeValue(stub, "userRole", ADMIN_ROLE); err != nil {
+	//	message := "PERMISSION DENIED TO CALL DATA PROTOCOL"
+	//	return pb.Response{Status: 403, Message: message}
+	//}
 
 	// Call the proper function //
 	switch function {
