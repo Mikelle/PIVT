@@ -1,0 +1,122 @@
+Orderer:
+    OrdererType: kafka
+    Addresses:
+      &a9
+        - orderer0.cache.com:7050
+        - orderer1.cache.com:7050
+        - orderer2.cache.com:7050
+        - orderer3.cache.com:7050
+        - orderer4.cache.com:7050
+    BatchTimeout: 2s
+    BatchSize:
+      &a10
+        MaxMessageCount: 100
+        AbsoluteMaxBytes: 90 MB
+        PreferredMaxBytes: 2 MB
+    Kafka:
+      &a11
+        Brokers: []
+    Organizations:
+      &a12
+        - &a6
+            Name: OrdererOrg
+            ID: OrdererMSP
+            MSPDir: crypto-config/ordererOrganizations/cache.com/msp
+Capabilities:
+    Channel:
+      &a2
+        V1_4_3: true
+        V1_3: false
+        V1_1: false
+    Orderer:
+      &a7
+        V1_4_2: true
+        V1_1: false
+    Application:
+      &a1
+        V1_4_2: true
+        V1_3: false
+        V1_2: false
+        V1_1: false
+Application:
+  &a14
+    Organizations: {}
+    Capabilities: *a1
+Channel:
+    Capabilities: *a2
+Organizations:
+    - &a13
+        Name: OrdererOrg
+        ID: OrdererMSP
+        MSPDir: crypto-config/ordererOrganizations/cache.com/msp
+    - &a4
+        Name: priviMSP
+        ID: priviMSP
+        MSPDir: crypto-config/peerOrganizations/privi.com/msp
+        AnchorPeers:
+            - Host: peer0.privi.com
+              Port: 7051
+Profiles:
+    broadcast:
+        Consortium: AutoblockConsortium
+        Application:
+            Organizations:
+              &a8
+                - *a4
+    DevModeKafka:
+        Capabilities: *a2
+        Orderer:
+            OrdererType: kafka
+            Addresses: *a9
+            BatchTimeout: 2s
+            BatchSize: *a10
+            Kafka: *a11
+            Organizations: *a12
+            Capabilities: *a7
+        Application:
+            Organizations:
+                - *a13
+            Capabilities: *a1
+        Consortiums:
+            AutoblockConsortium:
+                Organizations: *a8
+    MultiNodeEtcdRaft:
+        Capabilities:
+            V1_4_3: true
+            V1_3: false
+            V1_1: false
+        Orderer:
+            OrdererType: etcdraft
+            Addresses: *a9
+            BatchTimeout: 2s
+            BatchSize: *a10
+            Kafka: *a11
+            Organizations:
+                - *a13
+            EtcdRaft:
+                Consenters:
+                    - Host: orderer0.cache.com
+                      Port: 7050
+                      ClientTLSCert: crypto-config/ordererOrganizations/cache.com/orderers/orderer0.cache.com/tls/server.crt
+                      ServerTLSCert: crypto-config/ordererOrganizations/cache.com/orderers/orderer0.cache.com/tls/server.crt
+                    - Host: orderer1.cache.com
+                      Port: 7050
+                      ClientTLSCert: crypto-config/ordererOrganizations/cache.com/orderers/orderer1.cache.com/tls/server.crt
+                      ServerTLSCert: crypto-config/ordererOrganizations/cache.com/orderers/orderer1.cache.com/tls/server.crt
+                    - Host: orderer2.cache.com
+                      Port: 7050
+                      ClientTLSCert: crypto-config/ordererOrganizations/cache.com/orderers/orderer2.cache.com/tls/server.crt
+                      ServerTLSCert: crypto-config/ordererOrganizations/cache.com/orderers/orderer2.cache.com/tls/server.crt
+                    - Host: orderer3.cache.com
+                      Port: 7050
+                      ClientTLSCert: crypto-config/ordererOrganizations/cache.com/orderers/orderer3.cache.com/tls/server.crt
+                      ServerTLSCert: crypto-config/ordererOrganizations/cache.com/orderers/orderer3.cache.com/tls/server.crt
+                    - Host: orderer4.cache.com
+                      Port: 7050
+                      ClientTLSCert: crypto-config/ordererOrganizations/cache.com/orderers/orderer4.cache.com/tls/server.crt
+                      ServerTLSCert: crypto-config/ordererOrganizations/cache.com/orderers/orderer4.cache.com/tls/server.crt
+            Capabilities: *a7
+        Application: *a14
+        Consortiums:
+            AutoblockConsortium:
+                Organizations: *a8
