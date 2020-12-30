@@ -1,12 +1,14 @@
 OrdererOrgs:
-  - Name: Orderer
+  - Name: cache
     Domain: cache.com
+    EnableNodeOUs: true
     Specs:
       - Hostname: orderer0
       - Hostname: orderer1
       - Hostname: orderer2
+
 PeerOrgs:
-  - Name: PRIVI
+  - Name: privi
     Domain: privi.com
     EnableNodeOUs: true
     Template:

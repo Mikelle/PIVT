@@ -12,8 +12,11 @@ Organizations:
 
     - &cache
         Name: cacheMSP
+
         ID: cacheMSP
+
         MSPDir: crypto-config/ordererOrganizations/cache.com/msp
+
         Policies:
             Readers:
                 Type: Signature
@@ -40,10 +43,10 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('priviMSP.member', 'priviMSP.admin', 'priviMSP.peer', 'priviMSP.client')"
+                Rule: "OR('priviMSP.admin', 'priviMSP.peer', 'priviMSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('priviMSP.member', 'priviMSP.admin', 'priviMSP.client')"
+                Rule: "OR('priviMSP.admin', 'priviMSP.client')"
             Admins:
                 Type: Signature
                 Rule: "OR('priviMSP.admin')"
@@ -153,8 +156,6 @@ Orderer: &OrdererDefaults
 
     Addresses:
         - orderer0.cache.com:7050
-        - orderer1.cache.com:7050
-        - orderer2.cache.com:7050
 
     # Batch Timeout: The amount of time to wait before creating a batch
     BatchTimeout: 1s
