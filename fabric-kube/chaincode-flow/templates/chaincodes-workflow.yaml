@@ -315,6 +315,7 @@ spec:
 {{- if $.Values.flow.instantiate.enabled }}
 {{- range $i, $chaincode := .Values.network.chaincodes }}
 {{- $version := (not $chaincode.version) | ternary $.Values.chaincode.version $chaincode.version }}
+{{- $ctor := (not $chaincode.ctor) | ternary $.Values.chaincode.ctor $chaincode.ctor }}
 {{- $language := (not $chaincode.language) | ternary $.Values.chaincode.language $chaincode.language }}
 {{- if or (not $.Values.flow.chaincode.include) (has $chaincode.name $.Values.flow.chaincode.include) }}
 {{- range $channel := $chaincode.channels }}
@@ -369,14 +370,14 @@ spec:
             echo '-- Chaincode {{ $chaincode.name }} is not instantiated on channel {{ $channel.name }}, will instantiate..' 
             peer chaincode instantiate --name {{ $chaincode.name }} --version {{ $version }} --lang {{ $language }} \
                   --channelID {{ $channel.name }} --orderer {{ $vars.ordererUrl }} \
-                  --policy "{{ $channel.policy }}" --ctor '{"Args":[""]}' \
+                  --policy "{{ $channel.policy }}" --ctor '{{ $ctor }}' \
             {{- if $.Values.tlsEnabled }}
                   --tls --cafile /hlf_config/orderer-tlsca/tlscacert.pem \
             {{- end }}
           ; else 
             peer chaincode upgrade --name {{ $chaincode.name }} --version {{ $version }} --lang {{ $language }} \
                   --channelID {{ $channel.name }} --orderer {{ $vars.ordererUrl }} \
-                  --policy "{{ $channel.policy }}" --ctor '{"Args":[""]}' \
+                  --policy "{{ $channel.policy }}" --ctor '{{ $ctor }}' \
             {{- if $.Values.tlsEnabled }}
                   --tls --cafile /hlf_config/orderer-tlsca/tlscacert.pem \
             {{- end }}
