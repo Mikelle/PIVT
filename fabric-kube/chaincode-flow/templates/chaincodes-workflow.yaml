@@ -254,8 +254,12 @@ spec:
 
           {{- if eq $language "golang" }}
 
-          # chaincode is packed with tar, first extract it 
-          mkdir -p $GOPATH/src/chaincode && 
+          # chaincode is packed with tar, first extract it
+          mkdir -p $GOROOT/src/github.com/hyperledger &&
+          cd $GOROOT/src/github.com/hyperledger && git clone -b release-1.4 https://github.com/hyperledger/fabric.git &&
+          mkdir -p $GOPATH/src/github.com/hyperledger &&
+          cd $GOPATH/src/github.com/hyperledger  && git clone -b release-1.4 https://github.com/hyperledger/fabric.git &&
+          mkdir -p $GOPATH/src/chaincode &&
           tar -xf /hlf_config/chaincode/{{ $chaincode.name }}.tar -C $GOPATH/src/chaincode && 
           peer chaincode install --path chaincode/{{ $chaincode.name }} --name {{ $chaincode.name }} \
               --version {{ $version }} --lang {{ $language }}
