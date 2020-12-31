@@ -16,7 +16,7 @@ network:
   # defines which chaincodes will be installed to which organizations
   chaincodes:
     - name: DataProtocol
-      ctor: '{"Args":["INSTANTIATE"]}'
+      ctor: '{"Args":["Init","INSTANTIATE"]}'
       # if defined, this will override the global chaincode.language value
       language: golang
       orgs: [privi]
